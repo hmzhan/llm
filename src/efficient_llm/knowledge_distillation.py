@@ -3,7 +3,11 @@ import torch.nn as nn
 import torch.nn.functional as F
 from transformers import Trainer
 from transformers import TrainingArguments
+from datasets import load_metric
 import numpy as np
+
+
+accuracy_score = load_metric("accuracy", trust_remote_code=True)
 
 
 class DistillationTrainingArguments(TrainingArguments):
