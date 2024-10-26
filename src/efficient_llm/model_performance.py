@@ -14,8 +14,10 @@ class PerformanceBenchmark:
         self.dataset = dataset
         self.optim_type = optim_type
 
-    # Prediction accuracy
     def compute_accuracy(self):
+        """
+        Compute model prediction accuracy
+        """
         preds, labels = [], []
         intents = self.dataset.features["intent"]
         for example in self.dataset:
@@ -27,18 +29,22 @@ class PerformanceBenchmark:
         print(f"Accuracy on test set - {accuracy['accuracy']:.3f}")
         return accuracy
 
-    # Model size
     def compute_size(self):
-        state_dict = self.pipeline.model.state_dict()
+        """
+        Compute model size
+        """
+        state_dict = self.pipeline.model.state_dict()  # all model info including bias, and weights for each layer
         tmp_path = Path("model.pt")
         torch.save(state_dict, tmp_path)
-        size_mb = Path(tmp_path).stat().st_size / (1024 * 1024)
+        size_mb = Path(tmp_path).stat().st_size / (1024 * 1024)  # model size in mb
         tmp_path.unlink()
         print(f"Model size (MB) - {size_mb:.2f}")
         return {"size_mb": size_mb}
 
-    # Latency
     def time_pipeline(self, query="What is the pin number for my account?"):
+        """
+        Estimate average time the model takes to generate outputs.
+        """
         latencies = []
         for _ in range(10):
             _ = self.pipeline(query)
@@ -55,6 +61,9 @@ class PerformanceBenchmark:
         return {"time_avg_ms": time_avg_ms, "time_std_ms": time_std_ms}
 
     def run_benchmark(self):
+        """
+        Run code to get information about model size, accuracy, and latency
+        """
         metrics = {}
         metrics[self.optim_type] = self.compute_size()
         metrics[self.optim_type].update(self.time_pipeline())
