@@ -27,7 +27,7 @@ class PerformanceBenchmark:
             labels.append(label)
         accuracy = accuracy_score.compute(predictions=preds, references=labels)
         print(f"Accuracy on test set - {accuracy['accuracy']:.3f}")
-        return accuracy
+        return round(accuracy, 3)
 
     def compute_size(self):
         """
@@ -39,7 +39,7 @@ class PerformanceBenchmark:
         size_mb = Path(tmp_path).stat().st_size / (1024 * 1024)  # model size in mb
         tmp_path.unlink()
         print(f"Model size (MB) - {size_mb:.2f}")
-        return {"size_mb": size_mb}
+        return {"size_mb": round(size_mb, 3)}
 
     def time_pipeline(self, query="What is the pin number for my account?"):
         """
@@ -58,13 +58,13 @@ class PerformanceBenchmark:
         time_avg_ms = 1000 * np.mean(latencies)
         time_std_ms = 1000 * np.std(latencies)
         print(f"Average latency (ms) - {time_avg_ms:.2f} +\- {time_std_ms:.2f}")
-        return {"time_avg_ms": time_avg_ms, "time_std_ms": time_std_ms}
+        return {"time_avg_ms": round(time_avg_ms, 3), "time_std_ms": round(time_std_ms, 3)}
 
     def run_benchmark(self):
         """
         Run code to get information about model size, accuracy, and latency
         """
-        metrics = {}
+        metrics = dict()
         metrics[self.optim_type] = self.compute_size()
         metrics[self.optim_type].update(self.time_pipeline())
         metrics[self.optim_type].update(self.compute_accuracy())
