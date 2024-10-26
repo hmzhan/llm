@@ -1,7 +1,11 @@
 import torch
+import numpy as np
 from pathlib import Path
 from time import perf_counter
 from datasets import load_metric
+
+
+accuracy_score = load_metric("accuracy", trust_remote_code=True)
 
 
 class PerformanceBenchmark:
@@ -13,6 +17,7 @@ class PerformanceBenchmark:
     # Prediction accuracy
     def compute_accuracy(self):
         preds, labels = [], []
+        intents = self.dataset.features["intent"]
         for example in self.dataset:
             pred = self.pipeline(example["text"])[0]["label"]
             label = example["intent"]

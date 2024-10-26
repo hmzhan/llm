@@ -1,2 +1,2 @@
 
-model_ckpt = "transformersbook/bert-base-uncased-finetuned-clinc"
+MODEL_CKPT = "transformersbook/bert-base-uncased-finetuned-clinc"
