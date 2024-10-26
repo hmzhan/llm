@@ -27,7 +27,8 @@ class PerformanceBenchmark:
             labels.append(label)
         accuracy = accuracy_score.compute(predictions=preds, references=labels)
         print(f"Accuracy on test set - {accuracy['accuracy']:.3f}")
-        return round(accuracy, 3)
+        accuracy['accuracy'] = round(accuracy['accuracy'], 3)
+        return accuracy
 
     def compute_size(self):
         """
