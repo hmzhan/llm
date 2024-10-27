@@ -5,7 +5,7 @@ from transformers import Trainer
 from transformers import TrainingArguments
 from datasets import load_metric
 import numpy as np
-
+from src.efficient_llm.constants import STUDENT_CKPT
 
 accuracy_score = load_metric("accuracy", trust_remote_code=True)
 
@@ -43,6 +43,9 @@ class DistillationTrainer(Trainer):
 
 
 def compute_metrics(pred):
+    """
+    Compute metrics
+    """
     predictions, labels = pred
     predictions = np.argmax(predictions, axis=1)
     return accuracy_score.compute(predictions=predictions, references=labels)
