@@ -5,7 +5,6 @@ from transformers import Trainer
 from transformers import TrainingArguments
 from datasets import load_metric
 import numpy as np
-from src.efficient_llm.constants import STUDENT_CKPT
 
 accuracy_score = load_metric("accuracy", trust_remote_code=True)
 
