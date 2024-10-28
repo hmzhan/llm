@@ -10,8 +10,8 @@ from transformers import (
 )
 from datasets import load_metric
 import numpy as np
-from .src.efficient_llm.constants import STUDENT_CKPT, TEACHER_CKPT, DEVICE
-from .src.efficient_llm.data import clinc
+from src.efficient_llm.constants import STUDENT_CKPT, TEACHER_CKPT, DEVICE
+from src.efficient_llm.data import clinc
 
 accuracy_score = load_metric("accuracy", trust_remote_code=True)
 
