@@ -1,16 +1,17 @@
+import os
+import numpy as np
+from pathlib import Path
+from psutil import cpu_count
+from transformers.convert_graph_to_onnx import convert
+from transformers import AutoTokenizer
+from scipy.special import softmax
 from onnxruntime import (
     GraphOptimizationLevel,
     InferenceSession,
     SessionOptions
 )
-import os
-from psutil import cpu_count
-from transformers.convert_graph_to_onnx import convert
-from transformers import AutoTokenizer
-from scipy.special import softmax
-import numpy as np
 from src.efficient_llm.model_performance import PerformanceBenchmark
-from pathlib import Path
+from src.efficient_llm.data import clinc
 
 
 def convert_model_onnx(model_ckpt, onnx_model_path):
