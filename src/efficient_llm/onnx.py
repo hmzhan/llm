@@ -3,10 +3,28 @@ from onnxruntime import (
     InferenceSession,
     SessionOptions
 )
+import os
+from psutil import cpu_count
+from transformers.convert_graph_to_onnx import convert
+from transformers import AutoTokenizer
 from scipy.special import softmax
 import numpy as np
 from src.efficient_llm.model_performance import PerformanceBenchmark
 from pathlib import Path
+
+
+def convert_model_onnx(model_ckpt, onnx_model_path):
+    os.environ['OMP_NUM_THREADS'] = f"{cpu_count()}"
+    os.environ['OMP_WAIT_POLICY'] = "ACTIVE"
+    tokenizer = AutoTokenizer.from_pretrained(model_ckpt)
+    convert(
+        framework="pt",
+        model=model_ckpt,
+        tokenizer=tokenizer,
+        output=onnx_model_path,
+        opset=12,
+        pipeline_name="text-classification"
+    )
 
 
 def create_model_for_provider(model_path, provider="CPUExecutionProvider"):
