@@ -12,6 +12,7 @@ from datasets import load_metric
 import numpy as np
 from src.efficient_llm.constants import STUDENT_CKPT, TEACHER_CKPT, DEVICE
 from src.efficient_llm.data import clinc
+from src.efficient_llm.model import pipe
 
 accuracy_score = load_metric("accuracy", trust_remote_code=True)
 
@@ -57,7 +58,7 @@ def compute_metrics(pred):
     return accuracy_score.compute(predictions=predictions, references=labels)
 
 
-def student_init(pipe):
+def student_init():
     student_config = AutoConfig.from_pretrained(
         STUDENT_CKPT,
         num_labels=clinc["test"].features["intent"].num_classes,
