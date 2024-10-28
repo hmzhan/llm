@@ -11,7 +11,6 @@ from onnxruntime import (
     SessionOptions
 )
 from src.efficient_llm.model_performance import PerformanceBenchmark
-from src.efficient_llm.data import clinc
 
 
 def convert_model_onnx(model_ckpt, onnx_model_path):
@@ -38,9 +37,10 @@ def create_model_for_provider(model_path, provider="CPUExecutionProvider"):
 
 
 class OnnxPipeline:
-    def __init__(self, model, tokenizer):
+    def __init__(self, model, tokenizer, dataset):
         self.model = model
         self.tokenizer = tokenizer
+        self.dataset = dataset
 
     def __call__(self, query):
         model_inputs = self.tokenizer(query, return_tensors="pt")
@@ -49,9 +49,8 @@ class OnnxPipeline:
         probs = softmax(logits)
         pred_idx = np.argmax(probs).item()
         return [{
-            "label": clinc["test"].features["intent"].int2str(pred_idx),
+            "label": self.dataset["test"].features["intent"].int2str(pred_idx),
             "score": probs[pred_idx]
-
         }]
 
 
