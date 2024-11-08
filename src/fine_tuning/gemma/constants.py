@@ -20,3 +20,10 @@ class Config:
     lora_alpha: float = lora_r * 2
     lora_dropout: float = 0.05
     lora_bias: str = "none"
+
+
+@dataclass
+class Test:
+    status = True
+    config = Config()
+
